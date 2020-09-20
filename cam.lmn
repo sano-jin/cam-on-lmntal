@@ -1,3 +1,7 @@
+ cam((), [push, cur(A), swap, cur([snd, plus]), cons, app], []).
+ A = [push, snd, swap, push, quote(4), swap, push, cur([snd]), swap, quote(3), 
+ cons, app, cons, cons, app].
+
  fst @@
 	cam((_s, _t), [fst|C], S) :- ground(_t) | cam(_s, C, S).
  
