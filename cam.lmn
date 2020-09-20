@@ -1,0 +1,33 @@
+ fst @@
+	cam((_s, _t), [fst|C], S) :- ground(_t) | cam(_s, C, S).
+ 
+ snd @@
+	cam((_s, _t), [snd|C], S) :- ground(_s) | cam(_t, C, S).
+ 
+ quote @@
+	cam(_s, [quote(_c)|C2], S) :- ground(_s) | cam(_c, C2, S).
+ 
+ cur @@
+	cam(_s, [cur(C)|C1], S) :- cam(':'(C, _s), C1, S).
+ 
+ push @@
+	cam(_s, [push|C], S) :- ground(_s) | cam(_s, C, [_s|S]).
+ 
+ swap @@
+	cam(_t, [swap|C], [_s|S]) :- cam(_s, C, [_t|S]).
+ 
+ cons @@
+	cam(_t, [cons|C], [_s|S]) :- cam((_s, _t), C, S).
+ 
+ app @@
+	cam((':'(C, _s), _t), [app|C1], S) :- 
+	cam((_s, _t), append(C, C1), S)
+ 	.
+ plus @@
+	cam((_m, _n), [plus|C], S) :- _r = _m + _n | cam(_r, C, S).
+ 
+ {'$callback'(zerostep).
+  append @@
+	R = append([], L) :- R = L.
+	R = append([H|T], L) :- R = [H|append(T, L)].
+ }
