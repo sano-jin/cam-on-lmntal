@@ -21,8 +21,8 @@
  
  app @@
 	cam((':'(C, _s), _t), [app|C1], S) :- 
-	cam((_s, _t), append(C, C1), S)
- 	.
+	cam((_s, _t), append(C, C1), S).
+ 
  plus @@
 	cam((_m, _n), [plus|C], S) :- _r = _m + _n | cam(_r, C, S).
  
