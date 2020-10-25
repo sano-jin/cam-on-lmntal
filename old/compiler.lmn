@@ -5,8 +5,9 @@ E = let("x", plus, app("x", (4, let("x", 3, "x")))).
 
 // compiler
 let @@ 
- R = eval(let(Var, E1, E2), Env)
- :- R = eval(app(fun(Var, E2), E1), Env).
+ P = [eval(let(Var, E1, E2), Env)|N]
+ :- ground(Env)
+ | P = ['<', cur([eval(E2, [Var|Env])]), ',', eval(E1, Env), '>', '@'|N].
 
 fun @@
  P = [eval(fun(Var, Body), Env)|N]
@@ -15,7 +16,7 @@ fun @@
 tuple @@ 
  P = [eval((E1, E2), Env)|N]
  :- ground(Env)
- | P = [push, eval(E1, Env), swap, eval(E2, Env), cons|N].
+ | P = ['<', eval(E1, Env), ',', eval(E2, Env), '>'|N].
  
 lookup_var @@ 
  P = [eval(V1, [V2|T])|N]
@@ -29,7 +30,8 @@ resolve_var @@
  
 app @@ 
  P = [eval(app(E1, E2), Env)|N]
- :- P = [eval((E1, E2), Env), app|N]. 
+ :- ground(Env)
+ | P = ['<', eval(E1, Env), ',', eval(E2, Env), '>', '@'|N]. 
  
 val @@
  P = [eval(Val, Env)|N]
