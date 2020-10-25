@@ -1,0 +1,50 @@
+% let x = plus in x (4,(let x = 3 in x));
+
+cam((), [eval(E, [])], []).
+E = let("x", plus, app("x", (4, let("x", 3, "x")))).
+
+// compiler
+let @@ 
+ R = eval(let(Var, E1, E2), Env)
+ :- R = eval(app(fun(Var, E2), E1), Env).
+
+fun @@
+ P = [eval(fun(Var, Body), Env)|N]
+ :- P = [cur([eval(Body, [Var|Env])])|N].
+ 
+tuple @@ 
+ P = [eval((E1, E2), Env)|N]
+ :- ground(Env)
+ | P = [push, eval(E1, Env), swap, eval(E2, Env), cons|N].
+ 
+lookup_var @@ 
+ P = [eval(V1, [V2|T])|N]
+ :- string(V1), V1 \= V2
+ | P = [fst, eval(V1, T)|N].
+
+resolve_var @@ 
+ P = [eval(V1, [V2|T])|N]
+ :- string(V1), V1 == V2, ground(T)
+ | P = [snd|N].
+ 
+app @@ 
+ P = [eval(app(E1, E2), Env)|N]
+ :- P = [eval((E1, E2), Env), app|N]. 
+ 
+val @@
+ P = [eval(Val, Env)|N]
+ :- int(Val), ground(Env)
+ | P = [quote(Val)|N].
+
+plus @@
+ P = [eval(plus, Env)|N]
+ :- ground(Env)
+ | P = [cur([snd, plus])|N].
+
+
+
+ 
+ 
+
+
+
