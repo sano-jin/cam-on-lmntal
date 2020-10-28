@@ -6,7 +6,7 @@ Code = [cmpl(E, [])].
 
 % Z=\f.((\x.f(\v.xxv))\(\x.f(\v.xxv)))
 
-/*
+
 E = 
  let("z", 
 		  abs("f", app(
@@ -14,14 +14,14 @@ E =
 			   abs("x", app("f", abs("y", app(app("x", "x"), "y"))))
 			  )
 		 ),
-		 app(app("z", fun(["f", "n"], if(0 < "n", "n" * app("f", "n" - 1), 1))), 1)
+		 app(app("z", fun(["f", "n"], if(0 < "n", "n" * app("f", "n" - 1), 1))), 5)
 	).
-*/
+
 
 
 // E = (1 < 2).
 
-E = if(5 < 2, 3, 4).
+// E = if(1 < 2, 3, 4).
 
 // E = if(1 < 2, 3 + 4, 5 * 6).
 
@@ -50,7 +50,7 @@ lt @@
  R = (E1 < E2) :- R = app(lt, (E1, E2)).
 
 if @@
- R = if(E1, E2, E3) :- R = app(app(if, E1), (abs("()", E2), abs("()", E3))).
+ R = if(E1, E2, E3) :- R = app(if, (E1, (abs("()", E2), abs("()", E3)))).
 }.
 
 // compiler
