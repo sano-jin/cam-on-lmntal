@@ -1,0 +1,89 @@
+/*
+cam((), Code ,[]). 
+Code =
+[push,cur([push,snd,swap,push,quote(4),swap,push,cur([snd]),swap,quote(3),cons,app,cons,cons,app]),swap,cur([snd,plus]),cons,app]. 
+*/
+
+/*
+cam('()',[push,cur([push,snd,swap,push,fst,quote(4),swap,push,cur([snd]),swap,fst,quote(3),cons,app,cons,cons,app]),swap,cur([snd,plus]),cons,app],[]). 
+*/
+
+// cam('()',[push,cur([push,push,snd,swap,cur([cur([push,push,cur([snd,if]),swap,push,cur([snd,lt]),swap,push,quote(0),swap,snd,cons,cons,app,cons,app,swap,push,push,cur([snd,mul]),swap,push,snd,swap,push,fst,snd,swap,push,cur([snd,sub]),swap,push,snd,swap,quote(1),cons,cons,app,cons,app,cons,cons,app,swap,quote(1),cons,cons,app])]),cons,app,swap,quote(5),cons,app]),swap,cur([push,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),swap,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),cons,app]),cons,app],[]).
+
+// cam('()',[push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app],[]).
+
+// cam('()',[push,push,cur([snd,if]),swap,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,cons,app,swap,push,quote(3),swap,quote(4),cons,cons,app],[]).
+
+// cam('()',[push,push,cur([snd,cur([snd,if])]),swap,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,cons,app,swap,push,quote(3),swap,quote(4),cons,cons,app],[]). 
+
+% cam('()',[push,cur([snd,if([quote(3)],[quote(4)])]),swap,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,cons,app],[]). 
+
+% cam('()',[push,cur([snd,if([quote(3)],[quote(4)])]),swap,push,cur([snd,lt]),swap,push,quote(5),swap,quote(2),cons,cons,app,cons,app],[]).
+
+% cam('()',[push,cur([snd,if([push,cur([snd,plus]),swap,push,quote(3),swap,quote(4),cons,cons,app],[push,cur([snd,mul]),swap,push,quote(5),swap,quote(6),cons,cons,app])]),swap,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,cons,app],[]). 
+
+% cam('()',[push,cur([push,push,snd,swap,cur([cur([push,cur([snd,if([push,cur([snd,mul]),swap,push,snd,swap,push,fst,snd,swap,push,cur([snd,sub]),swap,push,snd,swap,quote(1),cons,cons,app,cons,app,cons,cons,app],[quote(1)])]),swap,push,cur([snd,lt]),swap,push,quote(0),swap,snd,cons,cons,app,cons,app])]),cons,app,swap,quote(0),cons,app]),swap,cur([push,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),swap,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),cons,app]),cons,app],[]). 
+
+% cam('()',[push,cur([snd,if]),swap,push,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,swap,push,cur([quote(3)]),swap,cur([quote(4)]),cons,cons,cons,app],[]). 
+
+% cam('()',[push,cur([snd,if]),swap,push,push,cur([snd,lt]),swap,push,quote(1),swap,quote(2),cons,cons,app,swap,push,cur([push,cur([snd,plus]),swap,push,quote(3),swap,quote(4),cons,cons,app]),swap,cur([push,cur([snd,mul]),swap,push,quote(5),swap,quote(6),cons,cons,app]),cons,cons,cons,app],[]). 
+
+% cam('()',[push,cur([push,push,snd,swap,cur([cur([push,cur([snd,if]),swap,push,push,cur([snd,lt]),swap,push,quote(0),swap,snd,cons,cons,app,swap,push,cur([push,cur([snd,mul]),swap,push,fst,snd,swap,push,fst,fst,snd,swap,push,cur([snd,sub]),swap,push,fst,snd,swap,quote(1),cons,cons,app,cons,app,cons,cons,app]),swap,cur([quote(1)]),cons,cons,cons,app])]),cons,app,swap,quote(1),cons,app]),swap,cur([push,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),swap,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),cons,app]),cons,app],[]). 
+
+cam('()',[push,cur([push,push,snd,swap,cur([cur([push,cur([snd,if]),swap,push,push,cur([snd,lt]),swap,push,quote(0),swap,snd,cons,cons,app,swap,push,cur([push,cur([snd,mul]),swap,push,fst,snd,swap,push,fst,fst,snd,swap,push,cur([snd,sub]),swap,push,fst,snd,swap,quote(1),cons,cons,app,cons,app,cons,cons,app]),swap,cur([quote(1)]),cons,cons,cons,app])]),cons,app,swap,quote(5),cons,app]),swap,cur([push,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),swap,cur([push,fst,snd,swap,cur([push,push,fst,snd,swap,fst,snd,cons,app,swap,snd,cons,app]),cons,app]),cons,app]),cons,app],[]). 
+
+
+fst @@
+ cam((_s, _t), [fst|C], S) :- ground(_t) | cam(_s, C, S).
+ 
+snd @@
+	 cam((_s, _t), [snd|C], S) :- ground(_s) | cam(_t, C, S).
+ 
+quote @@
+	 cam(_s, [quote(_c)|C2], S) :- ground(_s) | cam(_c, C2, S).
+ 
+cur @@
+	 cam(_s, [cur(C)|C1], S) :- cam(':'(C, _s), C1, S).
+ 
+push @@
+	 cam(_s, [push|C], S) :- ground(_s) | cam(_s, C, [_s|S]).
+ 
+swap @@
+	 cam(_t, [swap|C], [_s|S]) :- cam(_s, C, [_t|S]).
+ 
+cons @@
+	 cam(_t, [cons|C], [_s|S]) :- cam((_s, _t), C, S).
+ 
+app @@
+	 cam((':'(C, _s), _t), [app|C1], S)
+	 :- cam((_s, _t), append(C, C1), S).
+
+plus @@
+ cam((_m, _n), [plus|C], S) :- _r = _m + _n | cam(_r, C, S).
+
+mul @@
+ cam((_m, _n), [mul|C], S) :- _r = _m * _n | cam(_r, C, S).
+
+sub @@
+ cam((_m, _n), [sub|C], S) :- _r = _m - _n | cam(_r, C, S).
+
+lt_true @@
+ cam((_m, _n), [lt|C], S) :- _m < _n | cam(true, C, S).
+
+lt_false @@
+ cam((_m, _n), [lt|C], S) :- _m >= _n | cam(false, C, S).
+
+if_true @@
+ cam((true, E1E2), [if|C], S)
+ :- cam(E1E2, [push, fst, swap, quote(()), cons, app|C], S).
+
+if_false @@
+ cam((false, E1E2), [if|C], S)
+ :- cam(E1E2, [push, snd, swap, quote(()), cons, app|C], S).
+
+
+{'$callback'(zerostep).
+append @@
+ R = append([], L) :- R = L.
+	 R = append([H|T], L) :- R = [H|append(T, L)].
+}. 
