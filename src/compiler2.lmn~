@@ -1,0 +1,124 @@
+% let x = plus in x (4,(let x = 3 in x));
+
+cam((), Code, []).
+Code = [cmpl(E, [])].
+% E = let("x", plus, app("x", (4, let("x", 3, "x")))).
+
+% Z=\f.((\x.f(\v.xxv))\(\x.f(\v.xxv)))
+
+
+E = 
+ let("z", 
+		  abs("f", app(
+			   abs("x", app("f", abs("y", app(app("x", "x"), "y")))), 
+			   abs("x", app("f", abs("y", app(app("x", "x"), "y"))))
+			  )
+		 ),
+		 app(app("z", fun(["f", "n"], if(0 < "n", "n" * app("f", "n" - 1), 1))), 5)
+	).
+
+
+
+// E = (1 < 2).
+
+// E = if(1 < 2, 3, 4).
+
+// E = if(1 < 2, 3 + 4, 5 * 6).
+
+
+{'$callback'(zerostep).
+curry @@
+ R = fun([V|Vs], E) :- R = abs(V, fun(Vs, E)).
+ R = fun([], E) :- R = E.
+ 
+let @@
+ R = let(V, E1, E2) :- string(V) | R = app(abs(V, E2), E1).
+
+let_fun @@
+ R = let([V|Vs], E1, E2) :- R = app(fun([V|Vs], E2), E1).
+ 
+plus @@
+ R = E1 + E2 :- R = app(plus, (E1, E2)).
+
+mul @@
+ R = E1 * E2 :- R = app(mul, (E1, E2)).
+
+sub @@
+ R = E1 - E2 :- R = app(sub, (E1, E2)).
+
+lt @@
+ R = (E1 < E2) :- R = app(lt, (E1, E2)).
+
+if @@
+ R = if(E1, E2, E3) :- R = app(if, (E1, (abs("()", E2), abs("()", E3)))).
+}.
+
+// compiler
+abs @@
+ P = [cmpl(abs(Var, Body), Env)|N]
+ :- P = [cur([cmpl(Body, [Var|Env])])|N].
+ 
+tuple @@ 
+ P = [cmpl((E1, E2), Env)|N]
+ :- ground(Env)
+ | P = [push, cmpl(E1, Env), swap, cmpl(E2, Env), cons|N].
+ 
+lookup_var @@ 
+ P = [cmpl(V1, [V2|T])|N]
+ :- string(V1), V1 \== V2
+ | P = [fst, cmpl(V1, T)|N].
+
+resolve_var @@ 
+ P = [cmpl(V1, [V2|T])|N]
+ :- string(V1), V1 == V2, ground(T)
+ | P = [snd|N].
+ 
+app @@ 
+ P = [cmpl(app(E1, E2), Env)|N]
+ :- P = [cmpl((E1, E2), Env), app|N]. 
+ 
+number @@
+ P = [cmpl(Val, Env)|N]
+ :- int(Val), ground(Env)
+ | P = [quote(Val)|N]. 
+
+true @@
+ P = [cmpl(true, Env)|N]
+ :- ground(Env)
+ | P = [quote(true)|N].
+
+false @@
+ P = [cmpl(false, Env)|N]
+ :- ground(Env)
+ | P = [quote(false)|N].
+
+plus @@
+ P = [cmpl(plus, Env)|N]
+ :- ground(Env)
+ | P = [cur([snd, plus])|N].
+
+mul @@
+ P = [cmpl(mul, Env)|N]
+ :- ground(Env)
+ | P = [cur([snd, mul])|N].
+
+sub @@
+ P = [cmpl(sub, Env)|N]
+ :- ground(Env)
+ | P = [cur([snd, sub])|N].
+
+lt @@
+ P = [cmpl(lt, Env)|N]
+ :- ground(Env)
+ | P = [cur([snd, lt])|N].
+
+if @@
+ P = [cmpl(if, Env)|N]
+ :- ground(Env) 
+ | P = [cur([snd, if])|N].
+
+ 
+ 
+
+
+
