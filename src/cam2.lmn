@@ -34,56 +34,56 @@ cam('()',[push,cur([push,push,snd,swap,cur([cur([push,cur([snd,if]),swap,push,pu
 
 
 fst @@
- cam((_s, _t), [fst|C], S) :- ground(_t) | cam(_s, C, S).
- 
+cam((_s, _t), [fst|C], S) :- ground(_t) | cam(_s, C, S).
+
 snd @@
-	 cam((_s, _t), [snd|C], S) :- ground(_s) | cam(_t, C, S).
- 
+cam((_s, _t), [snd|C], S) :- ground(_s) | cam(_t, C, S).
+
 quote @@
-	 cam(_s, [quote(_c)|C2], S) :- ground(_s) | cam(_c, C2, S).
- 
+cam(_s, [quote(_c)|C2], S) :- ground(_s) | cam(_c, C2, S).
+
 cur @@
-	 cam(_s, [cur(C)|C1], S) :- cam(':'(C, _s), C1, S).
- 
+cam(_s, [cur(C)|C1], S) :- cam(':'(C, _s), C1, S).
+
 push @@
-	 cam(_s, [push|C], S) :- ground(_s) | cam(_s, C, [_s|S]).
- 
+cam(_s, [push|C], S) :- ground(_s) | cam(_s, C, [_s|S]).
+
 swap @@
-	 cam(_t, [swap|C], [_s|S]) :- cam(_s, C, [_t|S]).
- 
+cam(_t, [swap|C], [_s|S]) :- cam(_s, C, [_t|S]).
+
 cons @@
-	 cam(_t, [cons|C], [_s|S]) :- cam((_s, _t), C, S).
- 
+cam(_t, [cons|C], [_s|S]) :- cam((_s, _t), C, S).
+
 app @@
-	 cam((':'(C, _s), _t), [app|C1], S)
-	 :- cam((_s, _t), append(C, C1), S).
+cam((':'(C, _s), _t), [app|C1], S)
+  :- cam((_s, _t), append(C, C1), S).
 
 plus @@
- cam((_m, _n), [plus|C], S) :- _r = _m + _n | cam(_r, C, S).
+cam((_m, _n), [plus|C], S) :- _r = _m + _n | cam(_r, C, S).
 
 mul @@
- cam((_m, _n), [mul|C], S) :- _r = _m * _n | cam(_r, C, S).
+cam((_m, _n), [mul|C], S) :- _r = _m * _n | cam(_r, C, S).
 
 sub @@
- cam((_m, _n), [sub|C], S) :- _r = _m - _n | cam(_r, C, S).
+cam((_m, _n), [sub|C], S) :- _r = _m - _n | cam(_r, C, S).
 
 lt_true @@
- cam((_m, _n), [lt|C], S) :- _m < _n | cam(true, C, S).
+cam((_m, _n), [lt|C], S) :- _m < _n | cam(true, C, S).
 
 lt_false @@
- cam((_m, _n), [lt|C], S) :- _m >= _n | cam(false, C, S).
+cam((_m, _n), [lt|C], S) :- _m >= _n | cam(false, C, S).
 
 if_true @@
- cam((true, E1E2), [if|C], S)
- :- cam(E1E2, [push, fst, swap, quote(()), cons, app|C], S).
+cam((true, E1E2), [if|C], S)
+  :- cam(E1E2, [push, fst, swap, quote(()), cons, app|C], S).
 
 if_false @@
- cam((false, E1E2), [if|C], S)
- :- cam(E1E2, [push, snd, swap, quote(()), cons, app|C], S).
+cam((false, E1E2), [if|C], S)
+  :- cam(E1E2, [push, snd, swap, quote(()), cons, app|C], S).
 
 
 {'$callback'(zerostep).
-append @@
- R = append([], L) :- R = L.
-	 R = append([H|T], L) :- R = [H|append(T, L)].
+    append @@
+    R = append([], L) :- R = L.
+    R = append([H|T], L) :- R = [H|append(T, L)].
 }. 
