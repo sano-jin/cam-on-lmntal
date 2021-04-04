@@ -1,2 +1,2 @@
-# cam-on-lmntal
-Categorical Abstract Machine on LMNtal
+# cam-in-lmntal
+Categorical Abstract Machine in LMNtal
